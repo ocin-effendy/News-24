@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">News 24</string>
+    <string name="wrong_message">Something Wrong</string>
 </resources>

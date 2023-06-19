@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="8dp"
+    android:paddingVertical="20dp">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:background="@android:color/white"
+            android:contentDescription="@string/image_description"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Nico Ardia Effendy Ardia Effendy NIco"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/item_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="By NIco Ardia Effendy"
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="#909090"/>
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+
+
+
