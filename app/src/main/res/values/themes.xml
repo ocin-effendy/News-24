@@ -4,6 +4,5 @@
         <!-- Customize your light theme here. -->
     </style>
 
-
     <style name="Theme.News24" parent="Base.Theme.News24" />
 </resources>

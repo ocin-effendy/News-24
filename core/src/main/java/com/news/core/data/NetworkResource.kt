@@ -1,13 +1,10 @@
 package com.news.core.data
 
-import android.util.Log
 import com.news.core.data.resource.remote.network.ApiResponse
 import com.news.core.data.resource.remote.response.ArticlesItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 abstract class NetworkResource {
 
@@ -17,12 +14,12 @@ abstract class NetworkResource {
             is ApiResponse.Success -> {
                 emit(Resource.Success(apiResponse.data))
             }
-            is ApiResponse.Empty -> {
-            }
             is ApiResponse.Error -> {
                 onFetchFailed()
                 emit(Resource.Error<List<ArticlesItem>>(apiResponse.errorMessage))
             }
+
+            else -> {}
         }
     }
 

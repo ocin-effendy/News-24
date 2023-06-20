@@ -1,40 +1,21 @@
 package com.news.core.utils
 
 import com.news.core.data.resource.local.entity.NewsEntity
-import com.news.core.data.resource.remote.response.ArticlesItem
 import com.news.core.domain.model.News
 
 
 object DataMapper {
-    fun mapResponsesToEntities(input: List<ArticlesItem>): List<NewsEntity> {
-        val newsList = ArrayList<NewsEntity>()
-        input.map {
-            val news = NewsEntity(
-                author = it.author,
-                title = it.title!!,
-                description = it.description,
-                url = it.url,
-                urlToImage = it.urlToImage,
-                publishedAt = it.publishedAt,
-                content = it.content,
-                isFavorite = false
-            )
-            newsList.add(news)
-        }
-        return newsList
-    }
 
     fun mapEntitiesToDomain(input: List<NewsEntity>): List<News> =
         input.map {
             News(
                 author = it.author ?: "",
-                title = it.title ?: "",
+                title = it.title,
                 description = it.description ?: "",
                 url = it.url ?: "",
                 urlToImage = it.urlToImage ?: "",
                 publishedAt = it.publishedAt ?: "",
                 content = it.content ?: "",
-                isFavorite = false
             )
         }
 
@@ -46,6 +27,19 @@ object DataMapper {
         urlToImage = input.urlToImage,
         publishedAt = input.publishedAt,
         content = input.content,
-        isFavorite = false
     )
+
+    fun mapEntitiesToNews(input: NewsEntity?): News? =
+        input?.let {
+            News(
+                author = input.author ?: "no author",
+                title = it.title,
+                description = input.description ?: "no description",
+                url = input.url ?: "no url",
+                urlToImage = input.urlToImage ?: "no urlImage",
+                publishedAt = input.publishedAt ?: "no published",
+                content = input.content ?: "no content",
+            )
+        }
+
 }

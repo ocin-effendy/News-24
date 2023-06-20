@@ -32,6 +32,4 @@ data class NewsEntity (
     @ColumnInfo(name = "content")
     var content: String?,
 
-    @ColumnInfo(name = "isFavorite")
-    var isFavorite: Boolean = false
 )

@@ -7,19 +7,20 @@ import androidx.room.Query
 import androidx.room.Update
 import com.news.core.data.resource.local.entity.NewsEntity
 import kotlinx.coroutines.flow.Flow
+import retrofit2.http.DELETE
 
 @Dao
 interface NewsDao {
 
     @Query("SELECT * FROM news")
-    fun getAllNews(): Flow<List<NewsEntity>>
-
-    @Query("SELECT * FROM news where isFavorite = 1")
     fun getFavoriteNews(): Flow<List<NewsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNews(news: List<NewsEntity>)
+    fun insertToFavorite(news: NewsEntity)
 
-    @Update
-    fun updateFavoriteNews(news: NewsEntity)
+    @Query("SELECT * FROM news where title = :titleNews")
+    fun getSearchFavoriteNews(titleNews: String): Flow<NewsEntity>
+
+    @Query("DELETE FROM news WHERE title = :titleNews")
+    suspend fun deleteFavoriteNews(titleNews: String)
 }

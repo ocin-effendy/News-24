@@ -10,14 +10,14 @@ import javax.inject.Singleton
 @Singleton
 class LocalDataSource @Inject constructor(private val newsDao: NewsDao) {
 
-    fun getAllNews(): Flow<List<NewsEntity>> = newsDao.getAllNews()
-
     fun getFavoriteNews(): Flow<List<NewsEntity>> = newsDao.getFavoriteNews()
 
-    suspend fun insertNews(newsList: List<NewsEntity>) = newsDao.insertNews(newsList)
-
-    fun setFavoriteNews(news: NewsEntity, newState: Boolean) {
-        news.isFavorite = newState
-        newsDao.updateFavoriteNews(news)
+    fun setFavoriteNews(news: NewsEntity) {
+        newsDao.insertToFavorite(news)
     }
+
+    fun searchFavoriteNews(title: String): Flow<NewsEntity> = newsDao.getSearchFavoriteNews(title)
+
+    suspend fun deleteFavoriteNews(title: String) = newsDao.deleteFavoriteNews(title)
+
 }
