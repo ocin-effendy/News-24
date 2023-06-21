@@ -5,11 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.news.news24.databinding.ActivityMainBinding
-import com.news.news24.favoriteNews.FavoriteNewsFragment
 import com.news.news24.listNews.ListNewsFragment
 import com.news.news24.searchNews.SearchNewsFragment
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val fragment: Fragment = when (itemId) {
             R.id.page_1 -> ListNewsFragment()
             R.id.page_2 -> SearchNewsFragment()
-            R.id.page_3 -> FavoriteNewsFragment()
+            R.id.page_3 -> loadFragmentFromDynamicFeature()
             else -> ListNewsFragment()
         }
 
@@ -46,4 +44,12 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.frame_container, fragment)
             .commit()
     }
+
+    private fun loadFragmentFromDynamicFeature(): Fragment {
+        val moduleClassName = "com.news.favorite.FavoriteFragment"
+        val moduleClassLoader = classLoader
+        return moduleClassLoader.loadClass(moduleClassName).newInstance() as Fragment
+    }
+
+
 }

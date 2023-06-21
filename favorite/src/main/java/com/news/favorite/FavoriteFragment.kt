@@ -1,33 +1,54 @@
-package com.news.news24.favoriteNews
+package com.news.favorite
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.news.core.ui.FavoriteAdapter
-import com.news.news24.databinding.FragmentFavoriteNewsBinding
+import com.news.favorite.databinding.FragmentFavoriteBinding
 import com.news.news24.detailsNews.DetailsNewsActivity
-import dagger.hilt.android.AndroidEntryPoint
+import com.news.news24.di.FavoriteModuleDependencies
+import dagger.hilt.android.EntryPointAccessors
+import javax.inject.Inject
 
-@AndroidEntryPoint
-class FavoriteNewsFragment : Fragment() {
 
-    private val favoriteNewsViewModel: FavoriteNewsViewModel by viewModels()
+class FavoriteFragment : Fragment() {
 
-    private var _binding: FragmentFavoriteNewsBinding? = null
+    @Inject
+    lateinit var favoriteViewModelFactory: FavoriteViewModelFactory
+
+    private val favoriteViewModel: FavoriteViewModel by viewModels {
+        favoriteViewModelFactory
+    }
+
+    private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoriteNewsBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerFavoriteComponent.builder()
+            .context(context)
+            .appDependencies(
+                EntryPointAccessors.fromApplication(
+                    requireActivity().applicationContext,
+                    FavoriteModuleDependencies::class.java
+                )
+            )
+            .build()
+            .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,10 +64,8 @@ class FavoriteNewsFragment : Fragment() {
                 startActivity(intent)
             }
 
-            favoriteNewsViewModel.favoriteNews.observe(viewLifecycleOwner) { dataNews ->
+            favoriteViewModel.favoriteNews.observe(viewLifecycleOwner) { dataNews ->
                 favoriteAdapter.setDataNews(dataNews)
-                binding.viewError.root.visibility =
-                    if (dataNews.isNotEmpty()) View.GONE else View.VISIBLE
             }
 
             with(binding.listNews) {
