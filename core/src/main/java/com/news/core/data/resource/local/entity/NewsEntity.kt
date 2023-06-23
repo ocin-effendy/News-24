@@ -13,7 +13,6 @@ data class NewsEntity (
     var author: String?,
 
     @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "title")
     var title: String,
 
