@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ListNewsFragment : Fragment() {
     private var _binding: FragmentListNewsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val listNewsViewModel:ListNewsViewModel by viewModels()
 
     private lateinit var activeTextView: TextView
@@ -33,9 +33,9 @@ class ListNewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentListNewsBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ class ListNewsFragment : Fragment() {
             listNewsViewModel.getDataNews("news")
             getRequest()
 
-            binding.apply {
+            binding?.apply {
                 textForYou.setOnClickListener {
                     setActive(textForYou)
                     listNewsViewModel.getDataNews("news")
@@ -80,7 +80,7 @@ class ListNewsFragment : Fragment() {
                 }
             }
 
-            activeTextView = binding.textForYou
+            activeTextView = binding?.textForYou!!
             activeTextView.isSelected = true
 
             newsAdapter.onItemClick = { selectedData ->
@@ -89,7 +89,7 @@ class ListNewsFragment : Fragment() {
                 startActivity(intent)
             }
 
-            with(binding.listNews) {
+            binding?.listNews?.apply {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = newsAdapter
@@ -98,22 +98,21 @@ class ListNewsFragment : Fragment() {
     }
 
     private fun getRequest(){
-        listNewsViewModel.newsData.observe(requireActivity()) { resource ->
+        listNewsViewModel.newsData.observe(viewLifecycleOwner) { resource ->
             if (resource != null) {
                 when (resource) {
-                    is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+                    is Resource.Loading -> binding?.progressBar?.visibility = View.VISIBLE
                     is Resource.Success -> {
-                        binding.progressBar.visibility = View.GONE
+                        binding?.progressBar?.visibility = View.GONE
                         Log.i("resource", resource.data?.size.toString())
-                        newsAdapter.setDataNews(resource.data!!)
+                        resource.data?.let { newsAdapter.setDataNews(it) }
 
                     }
 
                     is Resource.Error -> {
-                        Log.i("jancok","MASUK COK")
-                        binding.progressBar.visibility = View.GONE
-                        binding.viewError.root.visibility = View.VISIBLE
-                        binding.viewError.tvError.text =
+                        binding?.progressBar?.visibility = View.GONE
+                        binding?.viewError?.root?.visibility = View.VISIBLE
+                        binding?.viewError?.tvError?.text =
                             resource.message ?: getString(R.string.wrong_message)
                     }
                 }
@@ -130,5 +129,6 @@ class ListNewsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        listNewsViewModel.newsData.removeObservers(viewLifecycleOwner)
     }
 }

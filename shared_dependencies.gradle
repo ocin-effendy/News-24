@@ -25,5 +25,8 @@ dependencies{
     androidTestImplementation "androidx.room:room-testing:$room_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+
+
 
 }

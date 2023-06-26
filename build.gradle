@@ -28,6 +28,8 @@ buildscript {
     ext.activity_ktx_version = "1.1.0"
     ext.fragment_ktx_version = '1.2.5'
 
+    ext.leakcanary_version = '2.10'
+
 
     ext.hilt_version = '2.36'
 

@@ -46,7 +46,6 @@ class DetailsNewsActivity : AppCompatActivity() {
 
         isFavoriteLiveData.observe(this) { result ->
             if (result != null) {
-                Log.e("search", result.title)
                 binding.iconSaved.setImageResource(R.drawable.baseline_bookmark_24)
             }
         }

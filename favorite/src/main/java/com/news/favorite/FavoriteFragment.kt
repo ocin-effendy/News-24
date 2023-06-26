@@ -27,14 +27,14 @@ class FavoriteFragment : Fragment() {
     }
 
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onAttach(context: Context) {
@@ -68,7 +68,7 @@ class FavoriteFragment : Fragment() {
                 favoriteAdapter.setDataNews(dataNews)
             }
 
-            with(binding.listNews) {
+            binding?.listNews?.apply {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = favoriteAdapter
@@ -80,6 +80,4 @@ class FavoriteFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

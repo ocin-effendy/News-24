@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class SearchNewsFragment : Fragment() {
     private var searchJob: Job? = null
     private var _binding: FragmentSearchNewsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val searchNewsViewModel: SearchNewsViewModel by viewModels()
     private val newsAdapter = NewsAdapter()
@@ -36,9 +36,9 @@ class SearchNewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentSearchNewsBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class SearchNewsFragment : Fragment() {
             searchNewsViewModel.getDataNews("2023")
             setDataList()
 
-            binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            binding?.searchEditText?.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
 
@@ -74,7 +74,7 @@ class SearchNewsFragment : Fragment() {
                 startActivity(intent)
             }
 
-            with(binding.listNews) {
+            binding?.listNews?.apply {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = newsAdapter
@@ -85,21 +85,20 @@ class SearchNewsFragment : Fragment() {
     }
 
     private fun setDataList(){
-        searchNewsViewModel.newsData.observe(requireActivity()) { resource ->
+        searchNewsViewModel.newsData.observe(viewLifecycleOwner) { resource ->
             if (resource != null) {
                 when (resource) {
-                    is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+                    is Resource.Loading -> binding?.progressBar?.visibility = View.VISIBLE
                     is Resource.Success -> {
-                        binding.progressBar.visibility = View.GONE
+                        binding?.progressBar?.visibility = View.GONE
                         Log.i("resource", resource.data?.size.toString())
-                        newsAdapter.setDataNews(resource.data!!)
+                        resource.data?.let { newsAdapter.setDataNews(it) }
 
                     }
                     is Resource.Error -> {
-                        Log.i("jancok","MASUK COK")
-                        binding.progressBar.visibility = View.GONE
-                        binding.viewError.root.visibility = View.VISIBLE
-                        binding.viewError.tvError.text =
+                        binding?.progressBar?.visibility = View.GONE
+                        binding?.viewError?.root?.visibility = View.VISIBLE
+                        binding?.viewError?.tvError?.text =
                             resource.message ?: getString(R.string.wrong_message)
                     }
                 }
@@ -110,5 +109,6 @@ class SearchNewsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        searchNewsViewModel.newsData.removeObservers(viewLifecycleOwner)
     }
 }
