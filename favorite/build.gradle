@@ -8,9 +8,7 @@ plugins {
 
 apply from: '../shared_dependencies.gradle'
 android {
-//    namespace 'com.news.favorite'
     compileSdkVersion 33
-//    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 24

@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.news.core.R
 import com.news.core.databinding.ItemNewsBinding
 import com.news.core.domain.model.News
+import androidx.recyclerview.widget.DiffUtil
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
 
@@ -19,10 +20,11 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setDataNews(newListData: List<News>) {
+        val diffResult = DiffUtil.calculateDiff(NewsDiffCallback(listDataNews, newListData))
         Log.i("setdata", newListData.toString())
         listDataNews.clear()
         listDataNews.addAll(newListData)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -56,5 +58,15 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
                 onItemClick?.invoke(listDataNews[adapterPosition])
             }
         }
+    }
+
+    class NewsDiffCallback(private val oldList: List<News>, private val newList: List<News>) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition].title == newList[newItemPosition].title
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

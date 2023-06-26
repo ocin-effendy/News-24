@@ -79,6 +79,4 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         unregisterReceiver(broadcastReceiver)
     }
-
-
 }

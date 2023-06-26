@@ -11,6 +11,9 @@ import com.news.core.domain.model.News
 import java.util.ArrayList
 import com.news.core.R
 import com.news.core.data.resource.remote.response.ArticlesItem
+import androidx.recyclerview.widget.DiffUtil
+
+
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
 
@@ -20,9 +23,15 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setDataNews(newListData: List<ArticlesItem>) {
+        val diffResult = DiffUtil.calculateDiff(
+            NewsAdapter.NewsDiffCallback(
+                listDataNews,
+                newListData
+            )
+        )
         listDataNews.clear()
         listDataNews.addAll(newListData)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -64,5 +73,15 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
                 onItemClick?.invoke(news)
             }
         }
+    }
+
+    class NewsDiffCallback(private val oldList: List<ArticlesItem>, private val newList: List<ArticlesItem>) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition].title == newList[newItemPosition].title
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

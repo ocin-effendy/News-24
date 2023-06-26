@@ -10,7 +10,6 @@ apply from: '../shared_dependencies.gradle'
 
 android {
     compileSdkVersion 33
-//    buildToolsVersion "30.0.2"
 
 
     defaultConfig {
@@ -29,6 +28,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
     }
 
     compileOptions {
@@ -48,7 +48,6 @@ android {
 dependencies {
 
     implementation project(":core")
-//    implementation project(':favorite')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.activity:activity-ktx:$activity_ktx_version"
