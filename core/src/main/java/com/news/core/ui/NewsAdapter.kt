@@ -24,7 +24,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun setDataNews(newListData: List<ArticlesItem>) {
         val diffResult = DiffUtil.calculateDiff(
-            NewsAdapter.NewsDiffCallback(
+            NewsDiffCallback(
                 listDataNews,
                 newListData
             )
