@@ -2,4 +2,3 @@ rootProject.name = "News 24"
 include ':app'
 include ':core'
 include ':favorite'
-//include ':app', ':favorite'
